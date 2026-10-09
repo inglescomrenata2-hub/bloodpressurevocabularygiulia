@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blood Pressure — Clinical English · Giulia</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --coral:#D85A30;--coral-l:#f07a56;--coral-pale:#fdf0ec;
+  --navy:#1a2740;--navy-mid:#263553;--slate:#4a5f7a;--muted:#8898a8;
+  --border:#dde4ed;--bg:#f4f6f9;
+  --green:#166534;--green-bg:#dcfce7;
+  --red:#b91c1c;--red-bg:#fee2e2;
+  --teal:#0e7490;--teal-bg:#e0f5fa;
+  --purple:#5b21b6;--purple-bg:#ede9fe;
+  --gold:#92400e;--gold-bg:#fef3c7;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--navy);line-height:1.65;}
+
+.header{background:var(--navy);padding:44px 28px 36px;position:relative;overflow:hidden;}
+.header::before{content:'';position:absolute;top:-60px;right:-60px;width:260px;height:260px;border-radius:50%;background:radial-gradient(circle,rgba(216,90,48,.15),transparent 70%);}
+.eyebrow{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--coral-l);margin-bottom:10px;position:relative;z-index:2;}
+.header h1{font-family:'Playfair Display',serif;font-size:clamp(26px,5vw,44px);color:#fff;line-height:1.1;margin-bottom:10px;position:relative;z-index:2;}
+.header h1 em{font-style:italic;color:var(--coral-l);}
+.header p{font-size:13.5px;color:#7f93ae;max-width:500px;font-weight:300;line-height:1.75;position:relative;z-index:2;}
+
+.ctx-strip{background:var(--coral);padding:14px 28px;display:flex;gap:24px;flex-wrap:wrap;align-items:center;}
+.ctx-item{display:flex;align-items:center;gap:8px;color:white;font-size:13px;}
+
+.scenario{margin:28px 22px;background:var(--navy-mid);border-radius:14px;padding:22px 24px;}
+.scenario-label{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--coral-l);margin-bottom:10px;}
+.scenario-text{font-size:14px;color:#cbd5e1;line-height:1.8;}
+.scenario-text strong{color:#fff;}
+
+.section{margin:28px 22px 0;}
+.sec-head{display:flex;align-items:flex-start;gap:14px;margin-bottom:14px;}
+.sec-num{background:var(--coral);color:#fff;font-family:'Playfair Display',serif;font-size:17px;width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;}
+.sec-title{font-family:'Playfair Display',serif;font-size:20px;color:var(--navy);}
+.sec-sub{font-size:12px;color:var(--muted);margin-top:2px;}
+.sec-tag{display:inline-block;font-size:10px;font-weight:700;padding:3px 10px;border-radius:8px;margin-left:8px;vertical-align:middle;letter-spacing:.5px;}
+.tag-reveal{background:var(--teal-bg);color:var(--teal);}
+.tag-practice{background:var(--purple-bg);color:var(--purple);}
+.tag-build{background:var(--gold-bg);color:var(--gold);}
+.instr{background:var(--coral-pale);border-left:3px solid var(--coral);padding:10px 14px;border-radius:0 8px 8px 0;font-size:13px;color:var(--navy);margin-bottom:18px;line-height:1.6;}
+.instr strong{color:var(--coral);}
+
+/* REVEAL CARDS — PT → EN */
+.phrase-card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin-bottom:10px;transition:box-shadow .15s;}
+.phrase-card:hover{box-shadow:0 3px 14px rgba(0,0,0,.07);}
+.phrase-num{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--coral);margin-bottom:6px;}
+.phrase-pt-q{font-size:16px;font-weight:600;color:var(--navy);margin-bottom:10px;line-height:1.4;}
+.phrase-pt-q .hl{background:var(--teal-bg);color:var(--teal);padding:1px 5px;border-radius:4px;font-weight:700;}
+.reveal-btn{width:100%;padding:10px 16px;background:var(--bg);border:1.5px solid var(--border);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--muted);cursor:pointer;text-align:center;transition:all .2s;font-weight:500;}
+.reveal-btn:hover{border-color:var(--coral);color:var(--coral);background:var(--coral-pale);}
+.reveal-btn.shown{background:var(--green-bg);border-color:var(--green);color:var(--green);font-weight:600;cursor:default;}
+.phrase-en-ans{display:none;font-size:15px;font-weight:600;color:var(--green);margin-top:10px;padding:10px 14px;background:var(--green-bg);border-radius:8px;border-left:3px solid var(--green);line-height:1.6;}
+.phrase-en-ans .hl{background:rgba(22,101,52,.15);padding:1px 5px;border-radius:4px;}
+.phrase-en-ans.show{display:block;}
+.phrase-note{font-size:12px;color:var(--muted);margin-top:6px;font-style:italic;}
+
+.cat-label{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:6px 12px;border-radius:6px;margin:20px 0 10px;display:inline-block;}
+.cat-assess{background:var(--teal-bg);color:var(--teal);}
+.cat-measure{background:var(--purple-bg);color:var(--purple);}
+.cat-results{background:var(--gold-bg);color:var(--gold);}
+.cat-followup{background:var(--green-bg);color:var(--green);}
+
+.tools-box{background:var(--navy);border-radius:14px;padding:20px 22px;margin:28px 22px;}
+.tools-title{font-family:'Playfair Display',serif;font-size:18px;color:#fff;margin-bottom:6px;}
+.tools-sub{font-size:12px;color:var(--muted);margin-bottom:16px;}
+.tools-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;}
+.tool-item{background:rgba(255,255,255,.06);border-radius:10px;padding:12px 14px;border:1px solid rgba(255,255,255,.08);}
+.tool-name{font-size:13px;font-weight:600;color:var(--coral-l);margin-bottom:4px;}
+.tool-desc{font-size:12px;color:#94a3b8;line-height:1.5;}
+
+/* MC */
+.ex-card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin-bottom:10px;}
+.ex-lbl{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--coral);margin-bottom:7px;}
+.ex-sent{font-size:15px;color:var(--navy);line-height:1.75;margin-bottom:10px;}
+.ex-sent .pt{font-style:italic;color:var(--slate);}
+.opts{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:8px;}
+.opt{padding:7px 16px;border-radius:18px;border:1.5px solid var(--border);background:#fff;font-family:'DM Sans',sans-serif;font-size:13.5px;color:var(--navy);cursor:pointer;transition:all .15s;}
+.opt:hover{border-color:var(--coral);color:var(--coral);background:var(--coral-pale);}
+.opt.correct{border-color:var(--green);background:var(--green-bg);color:var(--green);font-weight:600;}
+.opt.wrong{border-color:var(--red);background:var(--red-bg);color:var(--red);}
+.opt:disabled{cursor:default;}
+.fb{font-size:13px;padding:7px 11px;border-radius:6px;margin-top:7px;display:none;line-height:1.5;}
+.fb.show{display:block;}
+.fb.ok{background:var(--green-bg);color:var(--green);}
+.fb.fail{background:var(--red-bg);color:var(--red);}
+
+/* WRITE + REVEAL */
+.build-card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin-bottom:10px;}
+.build-pt{background:var(--bg);border-radius:8px;padding:12px 14px;margin-bottom:12px;font-size:15px;font-weight:600;color:var(--navy);line-height:1.6;border-left:3px solid var(--coral);}
+.build-pt .cat{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--coral);display:block;margin-bottom:5px;}
+.build-pt .hint{font-size:12px;color:var(--muted);font-weight:400;font-style:italic;display:block;margin-top:4px;}
+textarea.answer{width:100%;border:1.5px solid var(--border);border-radius:8px;padding:11px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--navy);resize:vertical;min-height:70px;outline:none;transition:border-color .2s;}
+textarea.answer:focus{border-color:var(--coral);}
+.answer-key{background:var(--green-bg);border:1px solid #86efac;border-radius:8px;padding:10px 14px;font-size:13.5px;font-weight:600;color:var(--green);margin-top:8px;display:none;line-height:1.6;}
+.answer-key .note{font-size:12px;font-weight:400;font-style:italic;color:#166534cc;margin-top:4px;display:block;}
+.answer-key.show{display:block;}
+.show-answer-btn{background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:7px 16px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;margin-top:8px;transition:all .15s;}
+.show-answer-btn:hover{border-color:var(--green);color:var(--green);}
+
+/* SPEAKING */
+.speak-card{background:var(--navy);border-radius:12px;padding:20px 22px;margin-bottom:10px;}
+.speak-q{font-family:'Playfair Display',serif;font-size:16px;color:#fff;margin-bottom:8px;line-height:1.35;}
+.speak-hint{font-size:12px;color:#7f93ae;font-style:italic;margin-bottom:10px;}
+.speak-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;}
+.chip{font-size:11px;font-weight:700;padding:3px 11px;border-radius:10px;background:rgba(255,255,255,.1);color:var(--coral-l);}
+.sp-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.sp-btn{background:var(--coral);color:#fff;border:none;border-radius:7px;padding:6px 14px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;cursor:pointer;}
+.sp-disp{font-family:'Playfair Display',serif;font-size:20px;color:#fff;min-width:52px;}
+.sp-disp.urgent{color:#fca5a5;}
+.sp-disp.done{color:#86efac;}
+textarea.notes{width:100%;border:1.5px solid rgba(255,255,255,.1);border-radius:8px;padding:10px;font-family:'DM Sans',sans-serif;font-size:13px;color:#fff;background:rgba(255,255,255,.05);resize:vertical;min-height:60px;outline:none;}
+textarea.notes::placeholder{color:#475569;font-style:italic;}
+
+.divider{height:1px;background:var(--border);margin:32px 22px;}
+
+.score-wrap{background:var(--navy);margin:28px 22px 44px;border-radius:14px;padding:28px;text-align:center;}
+.score-wrap h2{font-family:'Playfair Display',serif;font-size:22px;color:var(--coral-l);margin-bottom:4px;}
+.score-wrap p{font-size:12px;color:var(--muted);margin-bottom:16px;}
+.score-big{font-family:'Playfair Display',serif;font-size:56px;color:#fff;line-height:1;margin:6px 0 4px;}
+.score-msg{font-size:14px;color:#cbd5e1;margin:8px 0 18px;}
+.btn-score{background:var(--coral);color:#fff;border:none;border-radius:8px;padding:11px 32px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;}
+
+@media(max-width:580px){
+  .section,.tools-box,.score-wrap,.divider{margin-left:14px;margin-right:14px;}
+  .header{padding:34px 18px 28px;}
+  .ctx-strip{padding:12px 18px;gap:14px;}
+  .tools-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="eyebrow">Clinical English · Physio · Giulia</div>
+  <h1>Blood Pressure —<br><em>Como falar em inglês?</em></h1>
+  <p>Leia a pergunta em português e tente traduzi-la para o inglês antes de revelar a resposta.</p>
+</div>
+
+<div class="ctx-strip">
+  <div class="ctx-item"><span>🏥</span> Contexto clínico</div>
+  <div class="ctx-item"><span>🩺</span> Avaliação do paciente</div>
+  <div class="ctx-item"><span>💬</span> B1–B2</div>
+  <div class="ctx-item"><span>🎯</span> PT → EN</div>
+</div>
+
+<div class="scenario">
+  <div class="scenario-label">📍 Quando você usaria esse vocabulário?</div>
+  <div class="scenario-text">
+    Você é estudante de fisioterapia em estágio clínico. Antes de começar a sessão, você precisa <strong>avaliar a pressão arterial do paciente</strong>. Você vai perguntar sobre o histórico dele, fazer a medição com o esfigmomanômetro, explicar o que está fazendo, ler os resultados e decidir se é seguro continuar.<br><br>
+    Todas as frases abaixo são coisas que você <strong>diria diretamente ao paciente</strong>. Tente lembrar — ou montar — a versão em inglês antes de revelar.
+  </div>
+</div>
+
+<!-- ══════ PART 1 — PT → EN REVEAL ══════ -->
+<div class="section">
+  <div class="sec-head">
+    <div class="sec-num">1</div>
+    <div>
+      <div class="sec-title">Português → Inglês <span class="sec-tag tag-reveal">Revelar</span></div>
+      <div class="sec-sub">Leia em português — tente montar a frase em inglês — depois revele.</div>
+    </div>
+  </div>
+  <div class="instr">Leia cada frase em português em voz alta. <strong>Tente dizer em inglês antes de revelar.</strong> Preste atenção nas palavras destacadas.</div>
+
+  <div class="cat-label cat-assess">📋 Histórico do paciente</div>
+
+  <div class="phrase-card">
+    <div class="phrase-num">01</div>
+    <div class="phrase-pt-q">Você verificou sua <span class="hl">pressão arterial</span> recentemente?</div>
+    <button class="reveal-btn" onclick="reveal(this)">Ver em inglês</button>
+    <div class="phrase-en-ans">Have you had your <span class="hl">blood pressure</span> checked recently?</div>
+    <div class="phrase-note">💡 "Blood pressure" = pressão arterial — use no início de cada sessão.</div>
+  </div>
+
+  <div class="phrase-card">
+    <div class="phrase-num">02</div>
+    <div class="phrase-pt-q">Você tem <span class="hl">pressão alta</span> — também chamada de <span class="hl">hipertensão</span>?</div>
+    <button class="reveal-btn" onclick="reveal(this)">Ver em inglês</button>
+    <div class="phrase-en-ans">Do you have <span class="hl">high blood pressure</span> — also called <span class="hl">hypertension</span>?</div>
+  </div>
+
+  <div class="phrase-card">
+    <div class="phrase-num">03</div>
+    <div class="phrase-pt-q">Você já teve <span class="hl">pressão baixa</span> — também chamada de <span class="hl">hipotensão</span>?</div>
+    <button class="reveal-btn" onclick="reveal(this)">Ver em inglês</button>
+    <div class="phrase-en-ans">Have you ever had <span class="hl">low blood pressure</span> — also called <span class="hl">hypotension</span>?</div>
+  </div>
+
+  <div class="phrase-card">
+    <div class="phrase-num">04</div>
+    <div class="phrase-pt-q">Você toma algum <span class="hl">medicamento</span> para pressão arterial?</div>
+    <button class="reveal-btn" onclick="reveal(this)">Ver em inglês</button>
+    <div class="phrase-en-ans">Do you take any <span class="hl">medication</span> for blood pressure?</div>
+    <div class="phrase-note">💡 "Medication" é mais formal que "medicine" — prefira em contexto clínico.</div>
+  </div>
+
+  <div class="phrase-card">
+    <div class="phrase-num">05</div>
+    <div class="phrase-pt-q">Qual costuma ser a sua <span class="hl">leitura de pressão</span>?</div>
+    <button class="reveal-btn" onclick="reveal(this)">Ver em inglês</button>
+    <div class="phrase-en-ans">What is your usual blood pressure <span class="hl">reading</span>?</div>
+    <div class="phrase-note">💡 "Reading" = o número no monitor. Muito comum no inglês clínico.</div>
+  </div>
+
+  <div class="phrase-card">
+    <div class="phrase-num">06</div>
+    <div class="phrase-pt-q">Você tem sentido <span class="hl">tontura</span> ou sensação de cabeça leve ultimamente?</div>
+    <button class="reveal-btn" onclick="reveal(this)">Ver em inglês</button>
+    <div class="phrase-en-ans">Have you been feeling <span class="hl">dizzy</span> or lightheaded lately?</div>
+    <div class="phrase-note">💡 "Dizzy" = tonto/a. "Lightheaded" = sensação de cabeça vazia — ambos indicam possível hipotensão.</div>
+  </div>
+
+  <div class="phrase-card">
+    <div class="phrase-num">07</div>
+    <div class="phrase-pt-q">Você se exercitou ou consumiu <span class="hl">cafeína</span> nos últimos 30 minutos?</div>
+    <button class="reveal-btn" onclick="reveal(this)">Ver em inglês</button>
+    <div class="phrase-en-ans">Have you exercised or had <span class="hl">caffeine</span> in the last 30 minutes?</div>
+  </div>
+
+  <div class="cat-label cat-measure">🩺 Medindo a pressão</div>
+
+  <div class="phrase-card">
+    <div class="phrase-num">08</div>
+    <div class="phrase-pt-q">Poderia <span class="hl">arregaçar a manga</span>, por favor?</div>
+    <button class="reveal-btn" onclick="reveal(this)">Ver em inglês</button>
+    <div class="phrase-en-ans">Could you <span class="hl">roll up your sleeve</span>, please?</div>
+    <div class="phrase-note">💡 "Could you...?" = pedido educado e profissional.</div>
+  </div>
+
+  <div class="phrase-card">
+    <div class="phrase-num">09</div>
+    <div class="phrase-pt-q">Posso colocar a <span class="hl">braçadeira</span> no seu braço?</div>
+    <button class="reveal-btn" onclick="reveal(this)">Ver em inglês</button>
+    <div class="phrase-en-ans">Can I place the <span class="hl">cuff</span> around your upper arm?</div>
+    <div class="phrase-note">💡 Sempre peça permissão antes de tocar o paciente.</div>
+  </div>
+
+  <div class="phrase-card">
+    <div class="phrase-num">10</div>
+    <div class="phrase-pt-q">Poderia <span class="hl">relaxar o braço</span> e apoiá-lo na mesa?</div>
+    <button class="reveal-btn" onclick="reveal(this)">Ver em inglês</button>
+    <div class="phrase-en-ans">Could you <span class="hl">relax your arm</span> and rest it on the table?</div>
+  </div>
+
+  <div class="phrase-card">
+    <div class="phrase-num">11</div>
+    <div class="phrase-pt-q">A braçadeira está <span class="hl">muito apertada</span>?</div>
+    <button class="reveal-btn" onclick="reveal(this)">Ver em inglês</button>
+    <div class="phrase-en-ans">Does the cuff feel <span class="hl">too tight</span>?</div>
+  </div>
+
+  <div class="phrase-card">
+    <div class="phrase-num">12</div>
+    <div class="phrase-pt-q">Por favor, <span class="hl">mantenha o braço parado</span> e tente não falar enquanto faço a leitura.</div>
+    <button class="reveal-btn" onclick="reveal(this)">Ver em inglês</button>
+    <div class="phrase-en-ans">Please <span class="hl">keep your arm still</span> and try not to talk while I take the reading.</div>
+  </div>
+
+  <div class="phrase-card">
+    <div class="phrase-num">13</div>
+    <div class="phrase-pt-q">Vou <span class="hl">inflar a braçadeira</span> agora — você vai sentir um pouco de pressão.</div>
+    <button class="reveal-btn" onclick="reveal(this)">Ver em inglês</button>
+    <div class="phrase-en-ans">I'm going to <span class="hl">inflate the cuff</span> now — you may feel some pressure.</div>
+    <div class="phrase-note">💡 "I'm going to..." = avise sempre antes de agir.</div>
+  </div>
+
+  <div class="cat-label cat-results">📊 Lendo os resultados</div>
+
+  <div class="phrase-card">
+    <div class="phrase-num">14</div>
+    <div class="phrase-pt-q">Sua pressão está <span class="hl">120 por 80</span> — isso está dentro do <span class="hl">intervalo normal</span>.</div>
+    <button class="reveal-btn" onclick="reveal(this)">Ver em inglês</button>
+    <div class="phrase-en-ans">Your blood pressure is <span class="hl">120 over 80</span> — that's within the <span class="hl">normal range</span>.</div>
+    <div class="phrase-note">💡 Em inglês, lemos PA como "X <em>over</em> Y" — nunca "X por Y".</div>
+  </div>
+
+  <div class="phrase-card">
+    <div class="phrase-num">15</div>
+    <div class="phrase-pt-q">A <span class="hl">pressão sistólica</span> é o primeiro número — mede quando o coração <span class="hl">bate</span>.</div>
+    <button class="reveal-btn" onclick="reveal(this)">Ver em inglês</button>
+    <div class="phrase-en-ans">The <span class="hl">systolic pressure</span> is the first number — it measures the pressure when your heart <span class="hl">beats</span>.</div>
+  </div>
+
+  <div class="phrase-card">
+    <div class="phrase-num">16</div>
+    <div class="phrase-pt-q">A <span class="hl">pressão diastólica</span> é o segundo número — mede quando o coração está <span class="hl">em repouso</span>.</div>
+    <button class="reveal-btn" onclick="reveal(this)">Ver em inglês</button>
+    <div class="phrase-en-ans">The <span class="hl">diastolic pressure</span> is the second number — it measures the pressure when your heart is <span class="hl">at rest</span> between beats.</div>
+  </div>
+
+  <div class="phrase-card">
+    <div class="phrase-num">17</div>
+    <div class="phrase-pt-q">Sua pressão está um pouco <span class="hl">elevada</span> hoje — você já passou por isso antes?</div>
+    <button class="reveal-btn" onclick="reveal(this)">Ver em inglês</button>
+    <div class="phrase-en-ans">Your blood pressure is a little <span class="hl">elevated</span> today — have you experienced this before?</div>
+    <div class="phrase-note">💡 "Elevated" é menos alarmante que "high" — prefira com pacientes.</div>
+  </div>
+
+  <div class="phrase-card">
+    <div class="phrase-num">18</div>
+    <div class="phrase-pt-q">Vou medir sua pressão <span class="hl">mais uma vez</span> para confirmar a leitura.</div>
+    <button class="reveal-btn" onclick="reveal(this)">Ver em inglês</button>
+    <div class="phrase-en-ans">I'm going to take your blood pressure <span class="hl">one more time</span> to confirm the reading.</div>
+  </div>
+
+  <div class="cat-label cat-followup">⚠️ Seguimento e segurança</div>
+
+  <div class="phrase-card">
+    <div class="phrase-num">19</div>
+    <div class="phrase-pt-q">Dado o resultado, gostaria de <span class="hl">modificar</span> um pouco a sessão de hoje.</div>
+    <button class="reveal-btn" onclick="reveal(this)">Ver em inglês</button>
+    <div class="phrase-en-ans">Given your blood pressure reading, I'd like to <span class="hl">modify</span> today's session slightly.</div>
+  </div>
+
+  <div class="phrase-card">
+    <div class="phrase-num">20</div>
+    <div class="phrase-pt-q">Se você sentir <span class="hl">falta de ar</span>, dor no peito ou tontura intensa, me avise imediatamente.</div>
+    <button class="reveal-btn" onclick="reveal(this)">Ver em inglês</button>
+    <div class="phrase-en-ans">If you feel <span class="hl">short of breath</span>, chest pain, or very dizzy during the session, please tell me immediately.</div>
+  </div>
+
+  <div class="phrase-card">
+    <div class="phrase-num">21</div>
+    <div class="phrase-pt-q">Recomendo que você <span class="hl">monitore sua pressão</span> em casa antes da próxima sessão.</div>
+    <button class="reveal-btn" onclick="reveal(this)">Ver em inglês</button>
+    <div class="phrase-en-ans">I would recommend you <span class="hl">monitor your blood pressure</span> at home before our next session.</div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- TOOLS BOX -->
+<div class="tools-box">
+  <div class="tools-title">🩺 Equipamentos — Como se diz?</div>
+  <div class="tools-sub">Vocabulário dos instrumentos usados na medição de pressão arterial.</div>
+  <div class="tools-grid">
+    <div class="tool-item">
+      <div class="tool-name">Esfigmomanômetro</div>
+      <div class="tool-desc"><em>Sphygmomanometer</em> — o aparelho completo. Também chamado de <em>blood pressure monitor</em>.</div>
+    </div>
+    <div class="tool-item">
+      <div class="tool-name">Braçadeira</div>
+      <div class="tool-desc"><em>Cuff</em> — a faixa inflável colocada ao redor do braço.</div>
+    </div>
+    <div class="tool-item">
+      <div class="tool-name">Pêra / bomba</div>
+      <div class="tool-desc"><em>Bulb / pump</em> — a borracha usada para inflar a braçadeira manualmente.</div>
+    </div>
+    <div class="tool-item">
+      <div class="tool-name">Manômetro / mostrador</div>
+      <div class="tool-desc"><em>Gauge / dial</em> — exibe a leitura de pressão em mmHg.</div>
+    </div>
+    <div class="tool-item">
+      <div class="tool-name">Estetoscópio</div>
+      <div class="tool-desc"><em>Stethoscope</em> — usado na medição manual para ouvir os sons de Korotkoff.</div>
+    </div>
+    <div class="tool-item">
+      <div class="tool-name">mmHg</div>
+      <div class="tool-desc">Leia: <em>"millimetres of mercury"</em> — unidade de medida da pressão arterial.</div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══════ PART 2 — MC (cenários em PT) ══════ -->
+<div class="section">
+  <div class="sec-head">
+    <div class="sec-num">2</div>
+    <div>
+      <div class="sec-title">Qual frase em inglês? <span class="sec-tag tag-practice">Múltipla escolha</span></div>
+      <div class="sec-sub">Leia a situação em português e escolha a pergunta certa em inglês.</div>
+    </div>
+  </div>
+  <div class="instr">Leia cada situação e escolha a pergunta mais adequada para dizer ao paciente em inglês.</div>
+
+  <div class="ex-card">
+    <div class="ex-lbl">01</div>
+    <div class="ex-sent">O paciente acabou de chegar. Você quer saber se ele tem histórico de pressão alta antes de começar a sessão.</div>
+    <div class="opts">
+      <button class="opt" onclick="mc(this,'wrong','p1')">Does the cuff feel too tight?</button>
+      <button class="opt" onclick="mc(this,'correct','p1')">Do you have high blood pressure — also called hypertension?</button>
+      <button class="opt" onclick="mc(this,'wrong','p1')">What is your usual blood pressure reading?</button>
+    </div>
+    <div class="fb" id="fb-p1"></div>
+  </div>
+
+  <div class="ex-card">
+    <div class="ex-lbl">02</div>
+    <div class="ex-sent">Você colocou a braçadeira no braço do paciente. Antes de inflar, quer garantir que ele não vá se mover ou falar durante a leitura.</div>
+    <div class="opts">
+      <button class="opt" onclick="mc(this,'wrong','p2')">Have you exercised or had caffeine in the last 30 minutes?</button>
+      <button class="opt" onclick="mc(this,'wrong','p2')">Could you roll up your sleeve, please?</button>
+      <button class="opt" onclick="mc(this,'correct','p2')">Please keep your arm still and try not to talk while I take the reading.</button>
+    </div>
+    <div class="fb" id="fb-p2"></div>
+  </div>
+
+  <div class="ex-card">
+    <div class="ex-lbl">03</div>
+    <div class="ex-sent">A leitura foi 148/95 — mais alta que o esperado. Você quer medir uma segunda vez para confirmar.</div>
+    <div class="opts">
+      <button class="opt" onclick="mc(this,'wrong','p3')">Your blood pressure is 120 over 80 — that's within the normal range.</button>
+      <button class="opt" onclick="mc(this,'correct','p3')">I'm going to take your blood pressure one more time to confirm the reading.</button>
+      <button class="opt" onclick="mc(this,'wrong','p3')">Have you been feeling dizzy or lightheaded lately?</button>
+    </div>
+    <div class="fb" id="fb-p3"></div>
+  </div>
+
+  <div class="ex-card">
+    <div class="ex-lbl">04</div>
+    <div class="ex-sent">O paciente chegou corado e levemente ofegante. Você suspeita que ele tomou café ou correu para chegar.</div>
+    <div class="opts">
+      <button class="opt" onclick="mc(this,'correct','p4')">Have you exercised or had caffeine in the last 30 minutes?</button>
+      <button class="opt" onclick="mc(this,'wrong','p4')">Can I place the cuff around your upper arm?</button>
+      <button class="opt" onclick="mc(this,'wrong','p4')">Do you take any medication for blood pressure?</button>
+    </div>
+    <div class="fb" id="fb-p4"></div>
+  </div>
+
+  <div class="ex-card">
+    <div class="ex-lbl">05</div>
+    <div class="ex-sent">Após a sessão, a leitura ficou levemente elevada. Você quer recomendar monitoramento em casa.</div>
+    <div class="opts">
+      <button class="opt" onclick="mc(this,'wrong','p5')">Does the cuff feel too tight?</button>
+      <button class="opt" onclick="mc(this,'wrong','p5')">Could you relax your arm and rest it on the table?</button>
+      <button class="opt" onclick="mc(this,'correct','p5')">I would recommend you monitor your blood pressure at home before our next session.</button>
+    </div>
+    <div class="fb" id="fb-p5"></div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══════ PART 3 — ESCREVA EM INGLÊS ══════ -->
+<div class="section">
+  <div class="sec-head">
+    <div class="sec-num">3</div>
+    <div>
+      <div class="sec-title">Escreva em inglês <span class="sec-tag tag-build">Produção</span></div>
+      <div class="sec-sub">Leia a frase em português e escreva a versão em inglês.</div>
+    </div>
+  </div>
+  <div class="instr">Escreva a frase clínica em inglês. Depois clique em <strong>"Ver resposta"</strong> para comparar com a versão sugerida.</div>
+
+  <div class="build-card">
+    <div class="ex-lbl">01</div>
+    <div class="build-pt">
+      <span class="cat">📋 Histórico</span>
+      Poderia arregaçar a manga para eu poder colocar a braçadeira?
+      <span class="hint">Dica: use "Could you..."</span>
+    </div>
+    <textarea class="answer" id="b1" placeholder="Escreva em inglês..."></textarea>
+    <button class="show-answer-btn" onclick="showAns(this)">Ver resposta</button>
+    <div class="answer-key">"Could you roll up your sleeve so I can place the cuff on your arm?"
+      <span class="note">💡 "Could you...?" = pedido educado. "So I can..." explica o motivo — profissional e claro.</span>
+    </div>
+  </div>
+
+  <div class="build-card">
+    <div class="ex-lbl">02</div>
+    <div class="build-pt">
+      <span class="cat">🩺 Medição</span>
+      Vou inflar a braçadeira agora — você vai sentir um pouco de pressão no braço.
+      <span class="hint">Dica: use "I'm going to..."</span>
+    </div>
+    <textarea class="answer" id="b2" placeholder="Escreva em inglês..."></textarea>
+    <button class="show-answer-btn" onclick="showAns(this)">Ver resposta</button>
+    <div class="answer-key">"I'm going to inflate the cuff now — you may feel some pressure on your arm."
+      <span class="note">💡 "I'm going to..." = anunciando sua ação. "You may feel..." = prepara o paciente sem alarmar.</span>
+    </div>
+  </div>
+
+  <div class="build-card">
+    <div class="ex-lbl">03</div>
+    <div class="build-pt">
+      <span class="cat">📊 Resultados</span>
+      Sua pressão está 155 por 98 — um pouco elevada. Você já teve isso antes?
+      <span class="hint">Dica: lembre-se de dizer "over", não "por"</span>
+    </div>
+    <textarea class="answer" id="b3" placeholder="Escreva em inglês..."></textarea>
+    <button class="show-answer-btn" onclick="showAns(this)">Ver resposta</button>
+    <div class="answer-key">"Your blood pressure is 155 over 98 — a little elevated. Have you experienced this before?"
+      <span class="note">💡 "Elevated" é mais profissional que "high" — menos alarmante para o paciente.</span>
+    </div>
+  </div>
+
+  <div class="build-card">
+    <div class="ex-lbl">04</div>
+    <div class="build-pt">
+      <span class="cat">📊 Explicando</span>
+      O número de cima é a pressão sistólica — é a pressão quando seu coração bate.
+    </div>
+    <textarea class="answer" id="b4" placeholder="Escreva em inglês..."></textarea>
+    <button class="show-answer-btn" onclick="showAns(this)">Ver resposta</button>
+    <div class="answer-key">"The first number is the systolic pressure — it's the pressure when your heart beats."
+      <span class="note">💡 Use "the first number" — mais simples para o paciente entender que "the top number".</span>
+    </div>
+  </div>
+
+  <div class="build-card">
+    <div class="ex-lbl">05</div>
+    <div class="build-pt">
+      <span class="cat">⚠️ Segurança</span>
+      Se você sentir falta de ar ou tontura durante a sessão, me avise imediatamente.
+    </div>
+    <textarea class="answer" id="b5" placeholder="Escreva em inglês..."></textarea>
+    <button class="show-answer-btn" onclick="showAns(this)">Ver resposta</button>
+    <div class="answer-key">"If you feel short of breath or dizzy during the session, please tell me immediately."
+      <span class="note">💡 "Short of breath" = com falta de ar. "Tell me immediately" = instrução de segurança clara e direta.</span>
+    </div>
+  </div>
+
+  <div class="build-card">
+    <div class="ex-lbl">06</div>
+    <div class="build-pt">
+      <span class="cat">⚠️ Seguimento</span>
+      Dado o resultado de hoje, gostaria de modificar um pouco a sessão.
+      <span class="hint">Dica: use "Given..." para introduzir o motivo</span>
+    </div>
+    <textarea class="answer" id="b6" placeholder="Escreva em inglês..."></textarea>
+    <button class="show-answer-btn" onclick="showAns(this)">Ver resposta</button>
+    <div class="answer-key">"Given your blood pressure reading today, I'd like to modify today's session slightly."
+      <span class="note">💡 "Given..." = considerando / levando em conta. "I'd like to..." = mais suave do que "I will".</span>
+    </div>
+  </div>
+
+  <div class="build-card">
+    <div class="ex-lbl">07 — Desafio extra</div>
+    <div class="build-pt">
+      <span class="cat">📊 Explicando — extra</span>
+      O paciente pergunta: "O que significa 120 por 80?" — Explique os dois números em inglês simples.
+    </div>
+    <textarea class="answer" id="b7" style="min-height:90px;" placeholder="Escreva sua explicação em inglês..."></textarea>
+    <button class="show-answer-btn" onclick="showAns(this)">Ver resposta</button>
+    <div class="answer-key">"The first number — 120 — is the systolic pressure. That's the pressure when your heart beats and pumps blood. The second number — 80 — is the diastolic pressure. That's the pressure when your heart rests between beats. A normal range is around 120 over 80."
+      <span class="note">💡 Explicações em inglês simples constroem confiança com o paciente — e mostram fluência real.</span>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══════ PART 4 — SPEAKING ══════ -->
+<div class="section">
+  <div class="sec-head">
+    <div class="sec-num">4</div>
+    <div>
+      <div class="sec-title">Speaking — Role Play</div>
+      <div class="sec-sub">Pratique a interação clínica completa em voz alta — em inglês.</div>
+    </div>
+  </div>
+  <div class="instr">Fale como a fisioterapeuta. Use as frases que você praticou nas partes anteriores.</div>
+
+  <div class="speak-card">
+    <div class="speak-q">Role play: Você vai medir a pressão arterial de um paciente pela primeira vez. Conduza o processo completo — do histórico à colocação da braçadeira, até explicar o resultado.</div>
+    <div class="speak-hint">Tente incluir pelo menos 5 frases da Parte 1.</div>
+    <div class="speak-chips">
+      <span class="chip">Have you had your BP checked recently?</span>
+      <span class="chip">Could you roll up your sleeve?</span>
+      <span class="chip">I'm going to inflate the cuff now...</span>
+      <span class="chip">Your reading is... over...</span>
+    </div>
+    <div class="sp-row">
+      <button class="sp-btn" onclick="startSp('sp1',120)">▶ 2 min</button>
+      <div class="sp-disp" id="sp1">2:00</div>
+    </div>
+    <textarea class="notes" placeholder="Anotações da professora — frases usadas, erros, fluência..."></textarea>
+  </div>
+
+  <div class="speak-card">
+    <div class="speak-q">O paciente pergunta: "My reading is 155 over 98 — is that bad?" — Explique o resultado com calma em inglês: o que os números significam e o que você vai fazer.</div>
+    <div class="speak-hint">Use: elevated · systolic · diastolic · monitor · modify</div>
+    <div class="speak-chips">
+      <span class="chip">Your BP is a little elevated...</span>
+      <span class="chip">The first number is the systolic...</span>
+      <span class="chip">I'd recommend monitoring at home...</span>
+      <span class="chip">I'd like to modify today's session...</span>
+    </div>
+    <div class="sp-row">
+      <button class="sp-btn" onclick="startSp('sp2',90)">▶ 90s</button>
+      <div class="sp-disp" id="sp2">1:30</div>
+    </div>
+    <textarea class="notes" placeholder="Anotações da professora — vocabulário, adequação clínica, fluência..."></textarea>
+  </div>
+</div>
+
+<div class="score-wrap" style="margin-top:28px;">
+  <h2>Score — Parte 2</h2>
+  <p>Múltipla escolha (correção automática)</p>
+  <div class="score-big" id="scoreDisplay">—</div>
+  <div class="score-msg" id="scoreMsg"></div>
+  <button class="btn-score" onclick="calcScore()">Calcular score</button>
+</div>
+
+<script>
+function reveal(btn){
+  const en=btn.nextElementSibling;
+  en.classList.add('show');
+  btn.textContent='✓ Resposta revelada';
+  btn.classList.add('shown');
+  btn.disabled=true;
+}
+
+const answered={};
+const mcOk={
+  p1:'Correto — essa é a pergunta certa para avaliar histórico de PA antes de começar.',
+  p2:'Correto — sempre instrua o paciente antes de fazer a leitura.',
+  p3:'Correto — uma leitura alta deve ser confirmada com uma segunda medição.',
+  p4:'Correto — exercício ou cafeína recentes podem elevar temporariamente a PA.',
+  p5:'Correto — essa é a recomendação adequada após uma leitura elevada.'
+};
+const mcFail={
+  p1:'Não é o melhor encaixe para essa situação — tente outra opção.',
+  p2:'Essa pergunta é para outro momento da avaliação — tente outra opção.',
+  p3:'Não combina com essa situação — a leitura não foi normal.',
+  p4:'Essa pergunta é para o momento de colocar a braçadeira — tente outra.',
+  p5:'Essa frase é usada durante a medição — tente outra opção.'
+};
+function mc(btn,val,id){
+  if(answered[id])return;
+  answered[id]=true;
+  btn.parentElement.querySelectorAll('.opt').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fb-'+id);
+  if(val==='correct'){
+    btn.classList.add('correct');
+    fb.textContent='✓ '+mcOk[id];
+    fb.className='fb show ok';
+  } else {
+    btn.classList.add('wrong');
+    btn.parentElement.querySelectorAll('.opt').forEach(b=>{if(b!==btn)b.classList.add('correct');});
+    fb.textContent='✗ '+mcFail[id];
+    fb.className='fb show fail';
+  }
+}
+
+function showAns(btn){
+  const key=btn.nextElementSibling;
+  key.classList.add('show');
+  btn.textContent='Resposta revelada ✓';
+  btn.disabled=true;
+  btn.style.color='var(--green)';
+  btn.style.borderColor='var(--green)';
+}
+
+const spT={};
+function fmt(s){return Math.floor(s/60)+':'+(s%60<10?'0':'')+s%60;}
+function startSp(id,secs){
+  if(spT[id])clearInterval(spT[id]);
+  let r=secs;
+  const el=document.getElementById(id);
+  el.className='sp-disp';
+  el.textContent=fmt(r);
+  spT[id]=setInterval(()=>{
+    r--;el.textContent=fmt(r);
+    if(r<=10)el.className='sp-disp urgent';
+    if(r<=0){clearInterval(spT[id]);el.textContent='Done!';el.className='sp-disp done';}
+  },1000);
+}
+
+function calcScore(){
+  let t=0,m=5;
+  ['p1','p2','p3','p4','p5'].forEach(id=>{
+    const fb=document.getElementById('fb-'+id);
+    if(fb&&fb.classList.contains('ok'))t++;
+  });
+  document.getElementById('scoreDisplay').textContent=t+'/'+m;
+  const pct=Math.round(t/m*100);
+  document.getElementById('scoreMsg').textContent=
+    pct===100?'🌟 Perfect! Excellent clinical English!':
+    pct>=80?'👏 Great work — almost there!':
+    pct>=60?'💪 Good effort — revise a Parte 1 e tente de novo.':
+    '📖 Volte às frases da Parte 1 e releia com atenção antes de tentar novamente.';
+}
+
+const SK='giulia_bp_v2';
+function save(){
+  const d={};
+  document.querySelectorAll('textarea,input').forEach(e=>{if(e.id)d[e.id]=e.value;});
+  try{localStorage.setItem(SK,JSON.stringify(d));}catch(e){}
+}
+function load(){
+  try{
+    const r=localStorage.getItem(SK);
+    if(!r)return;
+    const d=JSON.parse(r);
+    Object.entries(d).forEach(([k,v])=>{
+      const e=document.getElementById(k);
+      if(e&&!e.disabled)e.value=v;
+    });
+  }catch(e){}
+}
+window.addEventListener('DOMContentLoaded',load);
+document.addEventListener('input',save);
+</script>
+</body>
+</html>
